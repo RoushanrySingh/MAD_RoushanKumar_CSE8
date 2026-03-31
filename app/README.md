@@ -1,4 +1,4 @@
-# Currency Converter App
+#  Currency Converter App
 
 This is a simple Android application developed for my Mobile Application Development (MAD) assignment.
 
@@ -6,7 +6,7 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ---
 
-## Features
+##  Features
 
 * Convert between INR, USD, EUR, JPY
 * Clean and simple user interface
@@ -17,19 +17,27 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ---
 
-## Screenshots
+##  Screenshots
 
 ### Home Screen
 
-![UI](screenshots/ui.png)
+![Home](screenshots/result.png)
 
 ### Conversion Output
 
-![Result](screenshots/result.png)
+![Output](screenshots/result%20\(1\).png)
+
+### Additional Screen 1
+
+![Screen3](screenshots/reult\(3\).png)
+
+### Additional Screen 2
+
+![Screen4](screenshots/result\(4\).png)
 
 ---
 
-## Technologies Used
+##  Technologies Used
 
 * Java (Android)
 * XML (UI Design)
@@ -38,7 +46,7 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ---
 
-##  How the App Works
+## ️ How the App Works
 
 1. User enters amount
 2. Selects "From Currency"
@@ -48,130 +56,76 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ---
 
-## Problems Faced & Solutions
+##  Problems Faced & Solutions
 
-### 1. App not running (MainActivity error)
+###  App not running (MainActivity error)
 
-**Error:**
-Activity class does not exist
-
-**Reason:**
-MainActivity was not properly detected in AndroidManifest
-
-**Solution:**
-
-* Fixed manifest activity entry
-* Rebuilt project using:
-  Build → Rebuild Project
+Fixed manifest and rebuilt project.
 
 ---
 
-### 2. Spinner (Currency dropdown) not showing values
+###  Spinner not showing currencies
 
-**Reason:**
-Spinner adapter was not set
-
-**Solution:**
-Added ArrayAdapter in MainActivity:
-
-```java
-ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-android.R.layout.simple_spinner_dropdown_item, currencies);
-fromCurrency.setAdapter(adapter);
-toCurrency.setAdapter(adapter);
-```
+Solved using ArrayAdapter.
 
 ---
 
-### 3. Currency conversion giving long decimal value
+###  Long decimal values
 
-**Example:**
-1.2048192771084338
-
-**Solution:**
-Formatted output:
-
-```java
-String.format("%.2f", output)
-```
+Formatted output using:
+`String.format("%.2f", output)`
 
 ---
 
-### 4. Text not visible (white on white issue)
+### Text visibility issue
 
-**Reason:**
-Default text color was not visible
-
-**Solution:**
-Added:
-
-```xml
-android:textColor="#000000"
-android:textColorHint="#888888"
-```
+Added proper textColor and background.
 
 ---
 
-### 5. Screenshots not showing on GitHub
+###  Screenshots not visible on GitHub
 
-**Reason:**
-Images were not added to Git
-
-**Solution:**
-
-```bash
-git add .
-git commit -m "Added screenshots"
-git push
-```
+Fixed by adding files using Git and correcting image paths.
 
 ---
 
-### 6. UI looked basic (not professional)
+###  UI looked basic
 
-**Solution:**
-
-* Added custom button background
-* Added rounded corners
-* Improved colors and spacing
-* Added result box styling
+Improved with custom drawable, colors, and spacing.
 
 ---
 
-## Project Structure
+##  Project Structure
 
-```
 currencyConverter/
 │
 ├── app/
 │   ├── src/
 │   ├── res/
 │   └── screenshots/
-│       ├── ui.png
-│       └── result.png
+│       ├── result.png
+│       ├── result (1).png
+│       ├── reult(3).png
+│       └── result(4).png
 │
 ├── README.md
-└── build.gradle
-```
 
 ---
 
-##  Conclusion
+## Conclusion
 
-This project helped me understand:
-
-* Android UI design using XML
-* Handling user input
-* Using Spinner and Buttons
-* Basic app navigation
-* Debugging errors
-* GitHub project management
+This project helped me understand Android development basics, UI design, user input handling, debugging, and GitHub project management.
 
 ---
 
-##  Author
+## Author
 
 Roushan Kumar Singh
 BTech CSE
+
+---
+
+
+
 
 
