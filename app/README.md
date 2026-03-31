@@ -21,19 +21,19 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ### Home Screen
 
-![Home](screenshots/result.png)
+##  Screenshots
+
+### Home Screen
+![Home](screenshots/result1.png)
 
 ### Conversion Output
-
-![Output](screenshots/result%20\(1\).png)
+![Output](screenshots/result2.png)
 
 ### Additional Screen 1
-
-![Screen3](screenshots/reult\(3\).png)
+![Screen3](screenshots/result3.png)
 
 ### Additional Screen 2
-
-![Screen4](screenshots/result\(4\).png)
+![Screen4](screenshots/result4.png)
 
 ---
 
