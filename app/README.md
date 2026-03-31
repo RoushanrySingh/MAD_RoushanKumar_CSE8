@@ -19,21 +19,17 @@ The app allows users to convert currency values between INR, USD, EUR, and JPY u
 
 ##  Screenshots
 
-### Home Screen
-
-##  Screenshots
-
-### Home Screen
+### Home Screen (Dropdown Working)
 ![Home](screenshots/result1.png)
 
-### Conversion Output
-![Output](screenshots/result2.png)
+### Conversion Output (Final Result)
+![Output](screenshots/result4.png)
 
-### Additional Screen 1
+### Settings Screen (Dark Mode)
 ![Screen3](screenshots/result3.png)
 
-### Additional Screen 2
-![Screen4](screenshots/result4.png)
+### Improved Home UI
+![Screen4](screenshots/result2.png)
 
 ---
 
@@ -104,9 +100,10 @@ currencyConverter/
 │   ├── res/
 │   └── screenshots/
 │       ├── result.png
-│       ├── result (1).png
-│       ├── reult(3).png
-│       └── result(4).png
+│       ├── result1.png
+│       ├── result2.png
+│       ├── result3.png
+│       └── result4.png
 │
 ├── README.md
 
@@ -120,10 +117,8 @@ This project helped me understand Android development basics, UI design, user in
 
 ## Author
 
-Roushan Kumar Singh
+Roushan Kumar Singh  
 BTech CSE
-
----
 
 
 

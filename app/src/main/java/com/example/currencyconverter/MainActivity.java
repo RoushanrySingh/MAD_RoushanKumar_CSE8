@@ -3,6 +3,7 @@ package com.example.currencyconverter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,17 +29,38 @@ public class MainActivity extends AppCompatActivity {
         convertBtn = findViewById(R.id.convertBtn);
         settingsBtn = findViewById(R.id.settingsBtn);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, currencies);
+        // 🔥 FIXED SPINNER ADAPTER (WHITE BG + BLACK TEXT)
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                currencies
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView) super.getView(position, convertView, parent);
+                view.setTextColor(getResources().getColor(android.R.color.black));
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView) super.getDropDownView(position, convertView, parent);
+
+                // 🔥 MAIN FIX
+                view.setTextColor(getResources().getColor(android.R.color.black));
+                view.setBackgroundColor(getResources().getColor(android.R.color.white));
+
+                return view;
+            }
+        };
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         fromCurrency.setAdapter(adapter);
         toCurrency.setAdapter(adapter);
 
+        // Convert Logic
         convertBtn.setOnClickListener(v -> {
-
-            // Animation
-            v.animate().scaleX(0.95f).scaleY(0.95f).setDuration(100)
-                    .withEndAction(() -> v.animate().scaleX(1).scaleY(1).setDuration(100));
 
             String value = amount.getText().toString();
 
@@ -57,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             result.setText(from + " → " + to + " : " + String.format("%.2f", output));
         });
 
+        // Settings Button
         settingsBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);

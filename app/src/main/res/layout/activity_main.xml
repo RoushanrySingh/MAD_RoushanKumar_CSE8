@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title"
+        android:text="Currency Converter"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="#1B1464"
@@ -24,35 +24,38 @@
         android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_amount"
+        android:hint="Enter Amount"
         android:inputType="numberDecimal"
-        android:padding="12dp"
         android:textColor="#000000"
         android:textColorHint="#888888"
+        android:padding="12dp"
         android:background="@android:drawable/edit_text"/>
 
-    <!-- From -->
+    <!-- From Currency -->
     <Spinner
         android:id="@+id/fromCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF"/>
+        android:background="#FFFFFF"
+        android:popupBackground="#FFFFFF"
+        android:padding="10dp"/>
 
-    <!-- To -->
     <Spinner
         android:id="@+id/toCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#FFFFFF"/>
+        android:background="#FFFFFF"
+        android:popupBackground="#FFFFFF"
+        android:padding="10dp"/>
 
     <!-- Convert Button -->
     <Button
         android:id="@+id/convertBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/convert"
+        android:text="Convert"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_bg"
         android:layout_marginTop="15dp"/>
@@ -62,21 +65,21 @@
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/result_text"
+        android:text="Result will appear here"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#1B1464"
+        android:textColor="#000000"
         android:gravity="center"
         android:padding="14dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/result_bg"/>
 
-    <!-- Settings -->
+    <!-- Settings Button -->
     <Button
         android:id="@+id/settingsBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
+        android:text="Settings"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_bg"
         android:layout_marginTop="20dp"/>
