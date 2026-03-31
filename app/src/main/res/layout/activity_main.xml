@@ -1,52 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="#F5F6FA">
 
     <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:textSize="22sp"
+        android:textSize="24sp"
         android:textStyle="bold"
+        android:textColor="#1B1464"
         android:layout_gravity="center"
-        android:paddingBottom="20dp" />
+        android:paddingBottom="20dp"/>
 
-    <!-- Amount input -->
+    <!-- Amount -->
     <EditText
         android:id="@+id/amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_amount"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:background="@android:drawable/edit_text"/>
 
-    <!-- From currency -->
+    <!-- From -->
     <Spinner
         android:id="@+id/fromCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"/>
 
-    <!-- To currency -->
+    <!-- To -->
     <Spinner
         android:id="@+id/toCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:background="#FFFFFF"/>
 
-    <!-- Convert button -->
+    <!-- Convert Button -->
     <Button
         android:id="@+id/convertBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/convert"
-        android:layout_marginTop="15dp" />
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_bg"
+        android:layout_marginTop="15dp"/>
 
     <!-- Result -->
     <TextView
@@ -54,15 +63,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/result_text"
-        android:textSize="18sp"
-        android:layout_marginTop="20dp" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#1B1464"
+        android:gravity="center"
+        android:padding="14dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/result_bg"/>
 
-    <!-- Settings button -->
+    <!-- Settings -->
     <Button
         android:id="@+id/settingsBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/settings"
-        android:layout_marginTop="20dp" />
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_bg"
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>
