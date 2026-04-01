@@ -1,109 +1,202 @@
 package com.example.currencyconverter;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
+/**
+ * MainActivity - Currency Converter main screen.
+ * Supports INR, USD, JPY, EUR conversion with swap functionality.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    EditText amount;
-    Spinner fromCurrency, toCurrency;
-    TextView result;
-    Button convertBtn, settingsBtn;
+    // UI components
+    private EditText etAmount;
+    private Spinner spinnerFrom, spinnerTo;
+    private Button btnConvert, btnSwap;
+    private TextView tvResult, tvRate;
 
-    String[] currencies = {"INR", "USD", "EUR", "JPY"};
+    // Currencies supported
+    private final String[] currencies = {"INR", "USD", "JPY", "EUR"};
+
+    // Exchange rates relative to 1 INR (base currency)
+    // 1 INR = x <currency>
+    private final double[] ratesFromINR = {
+            1.0,      // INR
+            0.012,    // USD  (1 INR = 0.012 USD)
+            1.81,     // JPY  (1 INR = 1.81 JPY)
+            0.011     // EUR  (1 INR = 0.011 EUR)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply saved theme BEFORE setContentView
+        applyThemeFromPrefs();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        amount = findViewById(R.id.amount);
-        fromCurrency = findViewById(R.id.fromCurrency);
-        toCurrency = findViewById(R.id.toCurrency);
-        result = findViewById(R.id.result);
-        convertBtn = findViewById(R.id.convertBtn);
-        settingsBtn = findViewById(R.id.settingsBtn);
+        // Set toolbar title
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Currency Converter");
+        }
 
-        // 🔥 FIXED SPINNER ADAPTER (WHITE BG + BLACK TEXT)
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        // Bind UI components
+        etAmount    = findViewById(R.id.etAmount);
+        spinnerFrom = findViewById(R.id.spinnerFrom);
+        spinnerTo   = findViewById(R.id.spinnerTo);
+        btnConvert  = findViewById(R.id.btnConvert);
+        btnSwap     = findViewById(R.id.btnSwap);
+        tvResult    = findViewById(R.id.tvResult);
+        tvRate      = findViewById(R.id.tvRate);
+
+        // Setup adapters for spinners
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 currencies
-        ) {
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFrom.setAdapter(adapter);
+        spinnerTo.setAdapter(adapter);
+
+        // Default: From INR (index 0), To USD (index 1)
+        spinnerFrom.setSelection(0);
+        spinnerTo.setSelection(1);
+
+        // Update rate label whenever spinner changes
+        AdapterView.OnItemSelectedListener spinnerListener = new AdapterView.OnItemSelectedListener() {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                TextView view = (TextView) super.getView(position, convertView, parent);
-                view.setTextColor(getResources().getColor(android.R.color.black));
-                return view;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateRateDisplay();
             }
-
             @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-
-                // 🔥 MAIN FIX
-                view.setTextColor(getResources().getColor(android.R.color.black));
-                view.setBackgroundColor(getResources().getColor(android.R.color.white));
-
-                return view;
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         };
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFrom.setOnItemSelectedListener(spinnerListener);
+        spinnerTo.setOnItemSelectedListener(spinnerListener);
 
-        fromCurrency.setAdapter(adapter);
-        toCurrency.setAdapter(adapter);
+        // Convert button
+        btnConvert.setOnClickListener(v -> convertCurrency());
 
-        // Convert Logic
-        convertBtn.setOnClickListener(v -> {
-
-            String value = amount.getText().toString();
-
-            if (value.isEmpty()) {
-                result.setText("Enter amount");
-                return;
+        // Swap button — swaps From and To currencies
+        btnSwap.setOnClickListener(v -> {
+            int fromPos = spinnerFrom.getSelectedItemPosition();
+            int toPos   = spinnerTo.getSelectedItemPosition();
+            spinnerFrom.setSelection(toPos);
+            spinnerTo.setSelection(fromPos);
+            // Re-convert if amount is already entered
+            if (etAmount.getText().length() > 0) {
+                convertCurrency();
             }
-
-            double input = Double.parseDouble(value);
-
-            String from = fromCurrency.getSelectedItem().toString();
-            String to = toCurrency.getSelectedItem().toString();
-
-            double output = convertCurrency(input, from, to);
-
-            result.setText(from + " → " + to + " : " + String.format("%.2f", output));
         });
 
-        // Settings Button
-        settingsBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
-        });
+        // Show initial rate
+        updateRateDisplay();
     }
 
-    private double convertCurrency(double amount, String from, String to) {
+    /**
+     * Reads amount input, calculates conversion via INR base rate, displays result.
+     */
+    private void convertCurrency() {
+        String amountStr = etAmount.getText().toString().trim();
 
-        double inINR = 0;
-
-        switch (from) {
-            case "INR": inINR = amount; break;
-            case "USD": inINR = amount * 83; break;
-            case "EUR": inINR = amount * 90; break;
-            case "JPY": inINR = amount * 0.55; break;
+        if (amountStr.isEmpty()) {
+            Toast.makeText(this, "Please enter an amount", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        switch (to) {
-            case "INR": return inINR;
-            case "USD": return inINR / 83;
-            case "EUR": return inINR / 90;
-            case "JPY": return inINR / 0.55;
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid amount entered", Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        return 0;
+        if (amount < 0) {
+            Toast.makeText(this, "Amount cannot be negative", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int fromIndex = spinnerFrom.getSelectedItemPosition();
+        int toIndex   = spinnerTo.getSelectedItemPosition();
+
+        // Convert: amount -> INR -> target currency
+        double inrValue = amount / ratesFromINR[fromIndex];
+        double result   = inrValue * ratesFromINR[toIndex];
+
+        String fromCurrency = currencies[fromIndex];
+        String toCurrency   = currencies[toIndex];
+
+        // JPY has no decimal places; others show 4
+        String formattedResult = (toCurrency.equals("JPY"))
+                ? String.format("%.0f", result)
+                : String.format("%.4f", result);
+
+        String formattedAmount = String.format("%.2f", amount);
+        tvResult.setText(formattedAmount + " " + fromCurrency + " = " + formattedResult + " " + toCurrency);
+    }
+
+    /**
+     * Displays the current exchange rate between selected currencies.
+     */
+    private void updateRateDisplay() {
+        int fromIndex = spinnerFrom.getSelectedItemPosition();
+        int toIndex   = spinnerTo.getSelectedItemPosition();
+
+        double rate = ratesFromINR[toIndex] / ratesFromINR[fromIndex];
+
+        String fromCurrency = currencies[fromIndex];
+        String toCurrency   = currencies[toIndex];
+
+        String formattedRate = (toCurrency.equals("JPY"))
+                ? String.format("%.4f", rate)
+                : String.format("%.6f", rate);
+
+        tvRate.setText("1 " + fromCurrency + " = " + formattedRate + " " + toCurrency);
+    }
+
+    /**
+     * Reads dark_mode flag from SharedPreferences and applies AppCompatDelegate mode.
+     * Call this before super.onCreate() so the theme is set before the window is created.
+     */
+    private void applyThemeFromPrefs() {
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean isDark = prefs.getBoolean("dark_mode", false);
+        AppCompatDelegate.setDefaultNightMode(
+                isDark ? AppCompatDelegate.MODE_NIGHT_YES
+                        : AppCompatDelegate.MODE_NIGHT_NO
+        );
+    }
+
+    // Inflate the options menu (toolbar gear icon → Settings)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    // Handle toolbar menu clicks
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
