@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Media Player</string>
+    <string name="app_title">🎬 Media Player</string>
+    <string name="no_media_selected">No media selected</string>
+    <string name="no_media_loaded">No media loaded</string>
+    <string name="open_file">📂 Open File</string>
+    <string name="open_url">🌐 Open URL</string>
+    <string name="playback_controls">Playback Controls</string>
+    <string name="play">▶ Play</string>
+    <string name="pause">⏸ Pause</string>
+    <string name="stop">⏹ Stop</string>
+    <string name="restart">🔁 Restart</string>
+    <string name="how_to_use_title">How to use:</string>
+    <string name="how_to_use_instructions">📂 Open File → Pick an audio file from your device\n🌐 Open URL → Enter a video streaming URL\nThen use Play / Pause / Stop / Restart</string>
+</resources>

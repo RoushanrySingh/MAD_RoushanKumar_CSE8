@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AndroidManifest.xml for Q2 — Media Player
+    INTERNET permission is required for video URL streaming.
+    READ_EXTERNAL_STORAGE is needed to open audio files from device storage.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mediaplayer">
+
+    <!-- Required for streaming video from a URL -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Required for reading audio files from device storage (Android 12 and below) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+
+    <!-- Android 13+ uses granular media permissions -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Media Player"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MediaPlayer"
+        android:usesCleartextTraffic="true">
+        <!--
+            usesCleartextTraffic="true" allows http:// URLs for testing.
+            For production, use only https:// links and remove this flag.
+        -->
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
