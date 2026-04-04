@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AndroidManifest.xml — Q4 Photo Gallery
+    Permissions needed:
+      - CAMERA: to take photos
+      - READ/WRITE_EXTERNAL_STORAGE: for Android 12 and below
+      - READ_MEDIA_IMAGES: for Android 13+
+    FileProvider: required to share file URIs with the camera app (Android 7+)
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.photogallery">
+
+    <!-- Camera permission -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
+    <!-- Storage — Android 12 and below -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"/>
+
+    <!-- Storage — Android 13+ -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Photo Gallery"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PhotoGallery">
+
+        <!-- Main / Home screen -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Gallery grid screen -->
+        <activity
+            android:name=".GalleryActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
+
+        <!-- Image detail screen -->
+        <activity
+            android:name=".ImageDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".GalleryActivity"/>
+
+        <!--
+            FileProvider — allows sharing file:// URIs with the camera app.
+            The authority MUST match: getPackageName() + ".provider"
+            i.e. "com.example.photogallery.provider"
+        -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.photogallery.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+    </application>
+
+</manifest>
